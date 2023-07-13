@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - UnderBox
+  - Enemy
+  - StageUi
   layers:
   - Default
   - TransparentFX
@@ -48,6 +50,15 @@ TagManager:
   - name: BackGround
     uniqueID: 1417607973
     locked: 0
+  - name: Enemy
+    uniqueID: 226808809
+    locked: 0
   - name: Charlie_Lion
     uniqueID: 3302824563
+    locked: 0
+  - name: StageUiBackGround
+    uniqueID: 2367564677
+    locked: 0
+  - name: StageUi
+    uniqueID: 3153779979
     locked: 0
