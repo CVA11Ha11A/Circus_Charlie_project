@@ -5,9 +5,9 @@ using UnityEngine;
 public class FireRingControl : MonoBehaviour
 {
     public Rigidbody2D fireRing;
-    public 
+    
 
-    //public float ringSpeed = 10f;
+    public float ringSpeed = 10f;
 
 
 
@@ -25,7 +25,7 @@ public class FireRingControl : MonoBehaviour
 
         fireRing.transform.Translate(Vector2.left * ringSpeed * Time.deltaTime);
 
-        if(fireRing.transform == )
+        //if(fireRing.transform == )
      
 
 

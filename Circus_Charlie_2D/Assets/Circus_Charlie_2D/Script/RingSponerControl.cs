@@ -5,23 +5,23 @@ using UnityEngine;
 public class RingSponerControl : MonoBehaviour
 {
     public GameObject fireRing;
-    
 
+    private int randSpone = 0; 
     public float sponeTime = 1f;
     public float sponeRing = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        randSpone = Random.Range(0, 10);
     }
 
     // Update is called once per frame
     void Update()
     {
-        sponeRing = sponeTime * Time.deltaTime;
+        sponeRing += sponeTime * Time.deltaTime;
 
-        if(sponeRing >= 5)
+        if(sponeRing >= randSpone)
         {
             SponeFireRing();
         }
@@ -30,6 +30,7 @@ public class RingSponerControl : MonoBehaviour
     public void SponeFireRing()
     {
         sponeRing = 0;
+        randSpone = Random.Range(0, 10);
         GameObject clone = Instantiate(fireRing, transform.position,transform.rotation);
     }
 }

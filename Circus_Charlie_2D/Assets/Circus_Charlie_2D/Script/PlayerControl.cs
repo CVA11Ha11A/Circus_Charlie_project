@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +14,13 @@ public class PlayerControl : MonoBehaviour
     private Collider2D playerCollider;
 
     public Collider2D underBox;
+    public GameObject firering;
+    public GameObject fireringSponer;
+    public GameObject backgroundPeople01;
+    public GameObject backgroundPeople02;
+
+
+
 
     public Animator chalriAni;
 
@@ -22,6 +31,11 @@ public class PlayerControl : MonoBehaviour
     private bool charlieMoveBool = false;
     private bool charlieJumpBool = false;
     private bool charlieIsJump = false;
+    private bool backgroundPeoples = false;
+
+    //애니메이션 Any State 로 사용할때에 bool 형식으로 사용시
+    //조건문이 많아져서 Triger로 변경
+    //private bool isgole = false;
 
     //죽을때 플레이어가 입력해도 못움직이게 하기위한 bool
     private bool playerInputLock = false;
@@ -33,6 +47,10 @@ public class PlayerControl : MonoBehaviour
         playerCollider = playerObj.GetComponent<Collider2D>();
 
         chalriAni.GetComponent<Animator>();
+        firering.GetComponent<GameObject>();
+        fireringSponer.GetComponent<GameObject>();
+        backgroundPeople01.GetComponent<GameObject>();
+        backgroundPeople02.GetComponent<GameObject>();
 
         underBox.GetComponent<Collider2D>();
     }
@@ -40,7 +58,7 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+ 
 
         //float xMove = Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
 
@@ -60,12 +78,9 @@ public class PlayerControl : MonoBehaviour
 
 
 
-
-
-
-
         chalriAni.SetBool("Charlie_Run", charlieMoveBool);
         chalriAni.SetBool("Charlie_Jump", charlieJumpBool);
+        
     }
 
     public void UserInput()
@@ -110,13 +125,45 @@ public class PlayerControl : MonoBehaviour
             charlieJumpBool = false;
         }
 
+        if (collision.gameObject.CompareTag("GolePoint"))
+        {
+            //Clear Bool 
+            //isgole = true;
+            //chalriAni.SetBool("Charlie_Clear", true);
+            //Invoke("ClearAniDelayFalseTest", 0.1f);
+            ////Clear Bool
+
+            //골인 하면 움직일수 있는 적 오브젝트 삭제
+            Destroy(fireringSponer);
+            Destroy(firering);
+
+
+            chalriAni.SetTrigger("Charlie_ClearTr");
+
+            playerInputLock = true;
+
+
+
+
+
+            for (int i = 0; i < 20; i++)
+            {
+                //Debug.LogFormat("몇번째 돌고 있는지 : {0}", i);
+                Invoke("ClearBackground", 0.5f * i);
+
+            }
+
+
+
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            Debug.Log("적이랑 부딪힘");
+            //Debug.Log("적이랑 부딪힘");
 
             playerInputLock = true;
             chalriAni.SetTrigger("Charlie_Die");
@@ -137,6 +184,31 @@ public class PlayerControl : MonoBehaviour
         playerCollider.isTrigger = true;
     }
 
+    private void ClearBackground()
+    {
+        //Debug.LogFormat("몇번째 돌고 있는지");
+        if (backgroundPeoples == true)
+        {
+            //Debug.LogFormat("꺼졌다");
+            backgroundPeoples = false;
+            backgroundPeople01.SetActive(false);
+            backgroundPeople02.SetActive(false);
+
+        }
+
+        else if (backgroundPeoples == false)
+        {
+            //Debug.LogFormat("켜졌다");
+            //Enable
+            backgroundPeoples = true;
+            backgroundPeople01.SetActive(true);
+            backgroundPeople02.SetActive(true);            
+            //async
+
+        }
+
+
+    }
 
 
     //player.AddForce(Vector2.right * h * playerSpeed * Time.deltaTime );
