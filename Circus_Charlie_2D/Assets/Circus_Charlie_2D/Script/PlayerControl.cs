@@ -19,6 +19,10 @@ public class PlayerControl : MonoBehaviour
     public GameObject backgroundPeople01;
     public GameObject backgroundPeople02;
 
+    AudioSource charlieAudioSource;
+
+    public AudioClip jumpSound;
+    public AudioClip dieSound;
 
 
 
@@ -32,6 +36,7 @@ public class PlayerControl : MonoBehaviour
     private bool charlieJumpBool = false;
     private bool charlieIsJump = false;
     private bool backgroundPeoples = false;
+        
 
     //애니메이션 Any State 로 사용할때에 bool 형식으로 사용시
     //조건문이 많아져서 Triger로 변경
@@ -45,14 +50,17 @@ public class PlayerControl : MonoBehaviour
     {
         playerRigid = playerObj.GetComponent<Rigidbody2D>();
         playerCollider = playerObj.GetComponent<Collider2D>();
+        underBox.GetComponent<Collider2D>();
 
         chalriAni.GetComponent<Animator>();
+
         firering.GetComponent<GameObject>();
         fireringSponer.GetComponent<GameObject>();
         backgroundPeople01.GetComponent<GameObject>();
         backgroundPeople02.GetComponent<GameObject>();
 
-        underBox.GetComponent<Collider2D>();
+        charlieAudioSource = GetComponent<AudioSource>();
+        
     }
 
     // Update is called once per frame
@@ -105,6 +113,8 @@ public class PlayerControl : MonoBehaviour
                     charlieIsJump = true;
                     float y = Input.GetAxis("Vertical");
                     playerRigid.AddForce(Vector3.up * 5, ForceMode2D.Impulse);
+                    charlieAudioSource.clip = jumpSound;
+                    charlieAudioSource.Play();
                 }
             }
 
@@ -135,7 +145,11 @@ public class PlayerControl : MonoBehaviour
 
             //골인 하면 움직일수 있는 적 오브젝트 삭제
             Destroy(fireringSponer);
+            
             Destroy(firering);
+           
+
+
 
 
             chalriAni.SetTrigger("Charlie_ClearTr");
@@ -167,6 +181,10 @@ public class PlayerControl : MonoBehaviour
 
             playerInputLock = true;
             chalriAni.SetTrigger("Charlie_Die");
+
+            charlieAudioSource.clip = dieSound;
+            charlieAudioSource.Play();
+            GameManager.instance.stage01_ThemeOff = 1;
 
 
             Invoke("PlayerFall", 1f);
